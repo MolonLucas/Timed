@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="secondary_title">40sp</dimen>
+
+    <dimen name="home_buttons">40sp</dimen>
+
+    <dimen name="buttons_finalizar">30sp</dimen>
+</resources>

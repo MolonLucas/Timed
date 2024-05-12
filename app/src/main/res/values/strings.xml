@@ -1,0 +1,25 @@
+<resources>
+    <!-- All -->
+    <string name="app_name">Timed</string>
+
+    <!-- Main -->
+    <string name="main_cadastrar_medicamento">Cadastrar novo medicamento</string>
+    <string name="main_cadastrar_frequencia">Cadastrar nova frequência</string>
+    <string name="main_listar_medicamento">Editar medicamento</string>
+    <string name="main_listar_frequencia">Editar frequência</string>
+
+    <!-- Crud's -->
+    <string name="btn_finalizar">Finalizar</string>
+
+    <!-- Crud Medicacao -->
+    <string name="crud_medicacao_title">Cadastro de medicação</string>
+    <string name="hint_nome">Nome</string>
+    <string name="hint_dosagem">Dosagem</string>
+    <string name="hint_frequencia">Frequência</string>
+    <string name="hint_lista_horarios">Horários</string>
+    <string name="hint_item_horario">Horário</string>
+
+    <!-- Crud Medicacao -->
+    <string name="crud_frequencia_title">Cadastro de frequência</string>
+    <string name="hint_descricao">Descrição</string>
+</resources>
