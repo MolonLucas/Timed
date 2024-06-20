@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import android.widget.Button;
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -28,6 +29,14 @@ public class HomeActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Método em branco para bloquear o click do botão voltar
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
 
         Button btnCadastrarMedicamento = findViewById(R.id.btn_novo_medicamento);
         Button btnCadastrarFrequencia = findViewById(R.id.btn_nova_frequencia);
