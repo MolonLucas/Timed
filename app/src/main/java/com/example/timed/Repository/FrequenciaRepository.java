@@ -6,6 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.timed.Uteis.DataBaseUtil;
+import com.example.timed.Model.Frequencia;
+import com.example.timed.Model.FrequenciaHorario;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FrequenciaRepository {
     private SQLiteDatabase db;
@@ -21,12 +26,49 @@ public class FrequenciaRepository {
         return db.insert("frequencia", null, values);
     }
 
-    public Cursor getAllFrequencias() {
-        return db.rawQuery("SELECT * FROM frequencia", null);
+    public List<Frequencia> getAllFrequencias() {
+        List<Frequencia> frequencias = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM frequencia", null);
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int idIndex = cursor.getColumnIndex("id");
+                    int descricaoIndex = cursor.getColumnIndex("descricao");
+
+                    if (idIndex >= 0 && descricaoIndex >= 0) {
+                        int id = cursor.getInt(idIndex);
+                        String descricao = cursor.getString(descricaoIndex);
+                        Frequencia frequencia = new Frequencia(id, descricao);
+                        frequencias.add(frequencia);
+                    }
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return frequencias;
     }
 
-    public Cursor getFrequenciaById(int id) {
-        return db.rawQuery("SELECT * FROM frequencia WHERE id = ?", new String[]{String.valueOf(id)});
+    public Frequencia getFrequenciaById(int id) {
+        Cursor cursor = db.rawQuery("SELECT * FROM frequencia WHERE id = ?", new String[]{String.valueOf(id)});
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                int idIndex = cursor.getColumnIndex("id");
+                int descricaoIndex = cursor.getColumnIndex("descricao");
+
+                if (idIndex >= 0 && descricaoIndex >= 0) {
+                    String descricao = cursor.getString(descricaoIndex);
+                    return new Frequencia(id, descricao);
+                }
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return null; // Retorna null se não encontrar a frequência com o ID especificado
     }
 
     public int updateFrequencia(int id, String descricao) {

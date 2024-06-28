@@ -54,28 +54,28 @@ public class HomeActivity extends AppCompatActivity {
         Button btnEditarFrequencia = findViewById(R.id.btn_edit_frequencia);
 
         btnCadastrarMedicamento.setOnClickListener(v -> {
-            if (PossuiFrequenciaCadastrada())
+            //if (PossuiFrequenciaCadastrada())
                 RedirecionarParaActivity(CrudMedicacaoActivity.class);
-            else
-                MostrarAlertaNenhumaFrequenciaCadastradaParaMedicamento();
+            //else
+            //    MostrarAlertaNenhumaFrequenciaCadastradaParaMedicamento();
         });
         btnCadastrarFrequencia.setOnClickListener(v -> RedirecionarParaActivity(CrudFrequenciaActivity.class));
         btnEditarMedicamento.setOnClickListener(v -> {
-            if (PossuiMedicamentoCadastrado())
+            //if (PossuiMedicamentoCadastrado())
                 RedirecionarParaActivity(ListMedicacaoActivity.class);
-            else
-                MostrarAlertaNenhumMedicamentoCadastrado();
+            //else
+            //    MostrarAlertaNenhumMedicamentoCadastrado();
         });
         btnEditarFrequencia.setOnClickListener(v -> {
-            if (PossuiFrequenciaCadastrada())
+            //if (PossuiFrequenciaCadastrada())
                 RedirecionarParaActivity(ListFrequenciaActivity.class);
-            else
-                MostrarAlertaNenhumaFrequenciaCadastrada();
+            //else
+            //    MostrarAlertaNenhumaFrequenciaCadastrada();
         });
     }
 
     private boolean PossuiFrequenciaCadastrada(){
-        return frequenciaRepository.getAllFrequencias().getCount() > 0;
+        return (long) frequenciaRepository.getAllFrequencias().size() > 0;
     }
 
     private boolean PossuiMedicamentoCadastrado(){
