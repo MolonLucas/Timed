@@ -1,11 +1,13 @@
 package com.example.timed.Home;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,8 +18,13 @@ import com.example.timed.Cruds.CrudMedicacaoActivity;
 import com.example.timed.Lists.ListFrequenciaActivity;
 import com.example.timed.Lists.ListMedicacaoActivity;
 import com.example.timed.R;
+import com.example.timed.Repository.FrequenciaRepository;
+import com.example.timed.Repository.MedicamentoRepository;
 
 public class HomeActivity extends AppCompatActivity {
+
+    FrequenciaRepository frequenciaRepository;
+    MedicamentoRepository medicamentoRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +45,61 @@ public class HomeActivity extends AppCompatActivity {
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
 
+        frequenciaRepository = new FrequenciaRepository(this);
+        medicamentoRepository = new MedicamentoRepository(this);
+
         Button btnCadastrarMedicamento = findViewById(R.id.btn_novo_medicamento);
         Button btnCadastrarFrequencia = findViewById(R.id.btn_nova_frequencia);
         Button btnEditarMedicamento = findViewById(R.id.btn_edit_medicamento);
         Button btnEditarFrequencia = findViewById(R.id.btn_edit_frequencia);
 
-        btnCadastrarMedicamento.setOnClickListener(v -> RedirecionarParaActivity(CrudMedicacaoActivity.class));
+        btnCadastrarMedicamento.setOnClickListener(v -> {
+            if (PossuiFrequenciaCadastrada())
+                RedirecionarParaActivity(CrudMedicacaoActivity.class);
+            else
+                MostrarAlertaNenhumaFrequenciaCadastradaParaMedicamento();
+        });
         btnCadastrarFrequencia.setOnClickListener(v -> RedirecionarParaActivity(CrudFrequenciaActivity.class));
-        btnEditarMedicamento.setOnClickListener(v -> RedirecionarParaActivity(ListMedicacaoActivity.class));
-        btnEditarFrequencia.setOnClickListener(v -> RedirecionarParaActivity(ListFrequenciaActivity.class));
+        btnEditarMedicamento.setOnClickListener(v -> {
+            if (PossuiMedicamentoCadastrado())
+                RedirecionarParaActivity(ListMedicacaoActivity.class);
+            else
+                MostrarAlertaNenhumMedicamentoCadastrado();
+        });
+        btnEditarFrequencia.setOnClickListener(v -> {
+            if (PossuiFrequenciaCadastrada())
+                RedirecionarParaActivity(ListFrequenciaActivity.class);
+            else
+                MostrarAlertaNenhumaFrequenciaCadastrada();
+        });
+    }
+
+    private boolean PossuiFrequenciaCadastrada(){
+        return frequenciaRepository.getAllFrequencias().getCount() > 0;
+    }
+
+    private boolean PossuiMedicamentoCadastrado(){
+        return medicamentoRepository.getAllMedicamentos().getCount() > 0;
+    }
+
+    private void MostrarAlertaNenhumaFrequenciaCadastradaParaMedicamento(){
+        MostrarAlerta("Você precisa cadastrar uma frequência antes de cadastrar um medicamento.");
+    }
+
+    private void MostrarAlertaNenhumaFrequenciaCadastrada(){
+        MostrarAlerta("Você precisa cadastrar uma frequência para poder entrar na tela de edição.");
+    }
+
+    private void MostrarAlertaNenhumMedicamentoCadastrado(){
+        MostrarAlerta("Você precisa cadastrar um medicamento para poder entrar na tela de edição.");
+    }
+
+    private void MostrarAlerta(String mensagem){
+        new AlertDialog.Builder(this)
+                .setTitle("Atenção")
+                .setMessage(mensagem)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     private void RedirecionarParaActivity(Class<?> activityClass){
