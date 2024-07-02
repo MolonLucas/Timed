@@ -1,7 +1,6 @@
 package com.example.timed.Cruds;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,10 +16,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.timed.Home.HomeActivity;
 import com.example.timed.Model.Frequencia;
+import com.example.timed.Model.Medicacao;
 import com.example.timed.R;
 import com.example.timed.Repository.FrequenciaRepository;
 import com.example.timed.Repository.MedicacaoRepository;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
@@ -30,6 +29,8 @@ public class CrudMedicacaoActivity extends AppCompatActivity {
 
     FrequenciaRepository frequenciaRepository;
     MedicacaoRepository medicacaoRepository;
+
+    int medicacaoId = -1; // Identificador da medicação a ser atualizada, inicializado como -1 se não estiver atualizando
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,13 @@ public class CrudMedicacaoActivity extends AppCompatActivity {
         Button btnFinalizar = findViewById(R.id.btn_finalizar_crud_medicamento);
 
         CarregarFrequencias(cmbFrequencia);
+
+        if (getIntent().hasExtra("MEDICACAO_ID")) {
+            medicacaoId = getIntent().getIntExtra("MEDICACAO_ID", -1);
+            if (medicacaoId != -1) {
+                loadMedicacaoData(medicacaoId, inputNome, inputDosagem, cmbFrequencia);
+            }
+        }
 
         btnFinalizar.setOnClickListener(v -> {
             String nome = inputNome.getText().toString().trim();
@@ -84,7 +92,14 @@ public class CrudMedicacaoActivity extends AppCompatActivity {
             }
 
             int idFrequenciaSelecionada = frequenciaRepository.getFrequenciaByDescricao(frequenciaSelecionada).Id;
-            medicacaoRepository.insertMedicacao(nome, Integer.parseInt(dosagem), idFrequenciaSelecionada);
+
+            if (medicacaoId == -1) {
+                medicacaoRepository.insertMedicacao(nome, Integer.parseInt(dosagem), idFrequenciaSelecionada);
+                Toast.makeText(this, "Medicação inserida com sucesso!", Toast.LENGTH_SHORT).show();
+            } else {
+                medicacaoRepository.updateMedicacao(medicacaoId, nome, Integer.parseInt(dosagem), idFrequenciaSelecionada);
+                Toast.makeText(this, "Medicação atualizada com sucesso!", Toast.LENGTH_SHORT).show();
+            }
 
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
@@ -102,5 +117,20 @@ public class CrudMedicacaoActivity extends AppCompatActivity {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cmbFrequencia.setAdapter(adapter);
+    }
+
+    private void loadMedicacaoData(int medicacaoId, EditText inputNome, EditText inputDosagem, Spinner cmbFrequencia) {
+        Medicacao medicacao = medicacaoRepository.getMedicacaoById(medicacaoId);
+        if (medicacao != null) {
+            inputNome.setText(medicacao.Nome);
+            inputDosagem.setText(String.valueOf(medicacao.Dosagem));
+
+            Frequencia frequencia = frequenciaRepository.getFrequenciaById(medicacao.idFrequencia);
+            if (frequencia != null) {
+                String descricaoFrequencia = frequencia.Descricao;
+                int position = ((ArrayAdapter<String>) cmbFrequencia.getAdapter()).getPosition(descricaoFrequencia);
+                cmbFrequencia.setSelection(position);
+            }
+        }
     }
 }

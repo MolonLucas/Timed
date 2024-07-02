@@ -58,6 +58,7 @@ public class ListMedicacaoActivity extends AppCompatActivity {
 
             btnEditar.setOnClickListener(v -> {
                 Intent intent = new Intent(this, CrudMedicacaoActivity.class);
+                intent.putExtra("MEDICACAO_ID", medicacao.Id);
                 startActivity(intent);
             });
 

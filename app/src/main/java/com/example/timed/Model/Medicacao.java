@@ -1,7 +1,7 @@
 package com.example.timed.Model;
 
 public class Medicacao{
-    public Medicacao(int id, String nome, double dosagem){
+    public Medicacao(int id, String nome, int dosagem){
         this.Id = id;
         this.Nome = nome;
         this.Dosagem = dosagem;
@@ -9,7 +9,7 @@ public class Medicacao{
 
     public int Id;
     public String Nome;
-    public double Dosagem;
+    public int Dosagem;
     public int idFrequencia;
     public Frequencia Frequencia;
 }

@@ -44,7 +44,7 @@ public class MedicacaoRepository {
                     if (idIndex >= 0 && nomeIndex >= 0 && dosagemIndex >= 0 && idFrequenciaIndex >= 0) {
                         int id = cursor.getInt(idIndex);
                         String nome = cursor.getString(nomeIndex);
-                        double dosagem = cursor.getDouble(dosagemIndex);
+                        int dosagem = cursor.getInt(dosagemIndex);
                         int idFrequencia = cursor.getInt(idFrequenciaIndex);
 
                         // Fetch the corresponding Frequencia
@@ -77,7 +77,7 @@ public class MedicacaoRepository {
 
                 if (idIndex >= 0 && nomeIndex >= 0 && dosagemIndex >= 0 && idFrequenciaIndex >= 0) {
                     String nome = cursor.getString(nomeIndex);
-                    double dosagem = cursor.getDouble(dosagemIndex);
+                    int dosagem = cursor.getInt(dosagemIndex);
                     int idFrequencia = cursor.getInt(idFrequenciaIndex);
 
                     // Fetch the corresponding Frequencia
@@ -109,7 +109,7 @@ public class MedicacaoRepository {
 
                 if (idIndex >= 0 && nomeIndex >= 0 && dosagemIndex >= 0 && idFrequenciaIndex >= 0) {
                     int id = cursor.getInt(idIndex);
-                    double dosagem = cursor.getDouble(dosagemIndex);
+                    int dosagem = cursor.getInt(dosagemIndex);
                     int idFrequencia = cursor.getInt(idFrequenciaIndex);
 
                     // Fetch the corresponding Frequencia
