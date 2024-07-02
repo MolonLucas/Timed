@@ -58,6 +58,7 @@ public class ListFrequenciaActivity extends AppCompatActivity {
 
             btnEditar.setOnClickListener(v -> {
                 Intent intent = new Intent(this, CrudFrequenciaActivity.class);
+                intent.putExtra("FREQUENCIA_ID", frequencia.Id);
                 startActivity(intent);
             });
 

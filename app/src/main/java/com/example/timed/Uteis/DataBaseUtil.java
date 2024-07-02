@@ -75,9 +75,9 @@ public class DataBaseUtil extends SQLiteOpenHelper {
     }
 
     private void insertDefaultFrequenciaHorarios(SQLiteDatabase db) {
-        insertFrequenciaHorario(db, 1, "2024-06-27 13:00:00");
-        insertFrequenciaHorario(db, 2, "2024-06-27 14:00:00");
-        insertFrequenciaHorario(db, 3, "2024-06-27 15:00:00");
+        insertFrequenciaHorario(db, 1, "13:00");
+        insertFrequenciaHorario(db, 2, "14:00");
+        insertFrequenciaHorario(db, 3, "15:00");
     }
 
     private void insertFrequenciaHorario(SQLiteDatabase db, int idFrequencia, String datahora) {

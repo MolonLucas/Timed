@@ -68,7 +68,7 @@ public class FrequenciaRepository {
                 cursor.close();
             }
         }
-        return null; // Retorna null se não encontrar a frequência com o ID especificado
+        return null;
     }
 
     public Frequencia getFrequenciaByDescricao(String descricao) {
@@ -88,7 +88,7 @@ public class FrequenciaRepository {
                 cursor.close();
             }
         }
-        return null; // Retorna null se não encontrar a frequência com a descrição especificada
+        return null;
     }
 
     public int updateFrequencia(int id, String descricao) {

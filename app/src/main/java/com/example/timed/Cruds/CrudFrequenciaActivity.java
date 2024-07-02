@@ -16,6 +16,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.timed.Home.HomeActivity;
+import com.example.timed.Model.Frequencia;
+import com.example.timed.Model.FrequenciaHorario;
 import com.example.timed.R;
 import com.example.timed.Repository.FrequenciaHorariosRepository;
 import com.example.timed.Repository.FrequenciaRepository;
@@ -34,10 +36,11 @@ public class CrudFrequenciaActivity extends AppCompatActivity {
 
     LinearLayout layoutList;
     ImageButton btnAddHorario;
-    EditText inputDescricaso;
+    EditText inputDescricao;
     Button btnFinalizar;
 
     List<String> horarios;
+    int frequenciaId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,19 +58,26 @@ public class CrudFrequenciaActivity extends AppCompatActivity {
 
         layoutList = findViewById(R.id.list_horarios);
         btnAddHorario = findViewById(R.id.btn_add_horario);
-        inputDescricaso = findViewById(R.id.input_text_descricao_crud_frequencia);
+        inputDescricao = findViewById(R.id.input_text_descricao_crud_frequencia);
         btnFinalizar = findViewById(R.id.btn_finalizar_crud_frequencia);
 
         horarios = new ArrayList<>();
 
-        btnAddHorario.setOnClickListener(v -> addHorarioView() );
+        if (getIntent().hasExtra("FREQUENCIA_ID")) {
+            frequenciaId = getIntent().getIntExtra("FREQUENCIA_ID", -1);
+            if (frequenciaId != -1) {
+                loadFrequenciaData(frequenciaId);
+            }
+        }
+
+        btnAddHorario.setOnClickListener(v -> addHorarioView());
 
         btnFinalizar.setOnClickListener(v -> {
-            String descricao = inputDescricaso.getText().toString().trim();
+            String descricao = inputDescricao.getText().toString().trim();
 
             if (descricao.isEmpty()) {
-                inputDescricaso.setError("A descrição da frequência é obrigatória");
-                inputDescricaso.requestFocus();
+                inputDescricao.setError("A descrição da frequência é obrigatória");
+                inputDescricao.requestFocus();
                 return;
             }
 
@@ -75,17 +85,40 @@ public class CrudFrequenciaActivity extends AppCompatActivity {
                 return;
             }
 
-            long idFrequencia = frequenciaRepository.insertFrequencia(descricao);
-            for (String horario : horarios) {
-                frequenciaHorariosRepository.insertFrequenciaHorario((int) idFrequencia, horario);
+            String mensagem = "";
+            if (frequenciaId == -1) {
+                long idFrequencia = frequenciaRepository.insertFrequencia(descricao);
+                for (String horario : horarios) {
+                    frequenciaHorariosRepository.insertFrequenciaHorario((int) idFrequencia, horario);
+                }
+                mensagem = "Frequência atualizada com sucesso!";
+            } else {
+                frequenciaRepository.updateFrequencia(frequenciaId, descricao);
+                frequenciaHorariosRepository.deleteFrequenciaHorariosByFrequenciaId(frequenciaId);
+                for (String horario : horarios) {
+                    frequenciaHorariosRepository.insertFrequenciaHorario(frequenciaId, horario);
+                }
+                mensagem = "Frequência salva com sucesso!";
             }
 
+            Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         });
     }
 
-    private void addHorarioView(){
+    private void loadFrequenciaData(int id) {
+        Frequencia frequencia = frequenciaRepository.getFrequenciaById(id);
+        if (frequencia != null) {
+            inputDescricao.setText(frequencia.Descricao);
+            List<FrequenciaHorario> horariosList = frequenciaHorariosRepository.getFrequenciaHorariosByFrequenciaId(id);
+            for (FrequenciaHorario horario : horariosList) {
+                addHorarioView(horario.getDatahora());
+            }
+        }
+    }
+
+    private void addHorarioView() {
         View itemHorario = getLayoutInflater().inflate(R.layout.item_list_horario, null, false);
 
         EditText horario = itemHorario.findViewById(R.id.input_horario_hora);
@@ -96,7 +129,41 @@ public class CrudFrequenciaActivity extends AppCompatActivity {
         layoutList.addView(itemHorario);
     }
 
-    private void removeHorarioView(View v){
+    private void addHorarioView(String horarioText) {
+        View itemHorario = getLayoutInflater().inflate(R.layout.item_list_horario, null, false);
+
+        EditText horarioEditText = itemHorario.findViewById(R.id.input_horario_hora);
+        ImageButton btnRemover = itemHorario.findViewById(R.id.btn_remover_horario);
+
+        String formattedHorario = formatTime(horarioText);
+        if (formattedHorario != null) {
+            horarioEditText.setText(formattedHorario);
+        } else {
+            Toast.makeText(this, "Erro ao formatar o horário: " + horarioText, Toast.LENGTH_SHORT).show();
+        }
+
+        btnRemover.setOnClickListener(this::removeHorarioView);
+
+        layoutList.addView(itemHorario);
+    }
+
+    private String formatTime(String time) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            Date date = inputFormat.parse(time);
+            if (date != null) {
+                return outputFormat.format(date);
+            } else {
+                return null;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void removeHorarioView(View v) {
         View parentLayout = (View) v.getParent();
         layoutList.removeView(parentLayout);
     }
@@ -127,36 +194,12 @@ public class CrudFrequenciaActivity extends AppCompatActivity {
                 return false;
             }
 
-            String formattedHorario = formatTime(horario);
-            if (formattedHorario == null) {
-                inputHorario.setError("Erro ao formatar horário");
-                inputHorario.requestFocus();
-                return false;
-            }
-
-            horarios.add(formattedHorario);
+            horarios.add(horario);
         }
         return true;
     }
 
     private boolean isValidTimeFormat(String time) {
         return time.matches("^([01]?\\d|2[0-3]):[0-5]\\d$");
-    }
-
-    private String formatTime(String time) {
-        try {
-            // Using the current date for the format
-            SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            Date date = inputFormat.parse(time);
-            if (date != null) {
-                return outputFormat.format(date);
-            } else {
-                return null;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }
