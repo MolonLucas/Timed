@@ -16,11 +16,14 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.timed.Cruds.CrudMedicacaoActivity;
 import com.example.timed.Model.Medicacao;
 import com.example.timed.R;
+import com.example.timed.Repository.MedicacaoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListMedicacaoActivity extends AppCompatActivity {
+
+    MedicacaoRepository medicacaoRepository;
 
     LinearLayout listMedicacao;
 
@@ -35,25 +38,11 @@ public class ListMedicacaoActivity extends AppCompatActivity {
             return insets;
         });
 
+        medicacaoRepository = new MedicacaoRepository(this);
+
         listMedicacao = findViewById(R.id.layout_list_medicacao);
 
-        List<Medicacao> frequenciaList = this.getMedicacaoMock();
-
-        adicionarItensLista(frequenciaList);
-    }
-
-    private List<Medicacao> getMedicacaoMock() {
-        List<Medicacao> retorno = new ArrayList<>();
-
-        Medicacao f1 = new Medicacao(1, "Paracetamol", 100);
-        Medicacao f2 = new Medicacao(2, "Fluoxetina", 200);
-        Medicacao f3 = new Medicacao(3, "Propranolol", 300);
-
-        retorno.add(f1);
-        retorno.add(f2);
-        retorno.add(f3);
-
-        return retorno;
+        adicionarItensLista(medicacaoRepository.getAllMedicacoes());
     }
 
     private void adicionarItensLista(List<Medicacao> medicacaoList) {

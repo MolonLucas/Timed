@@ -19,7 +19,7 @@ import com.example.timed.Home.HomeActivity;
 import com.example.timed.Model.Frequencia;
 import com.example.timed.R;
 import com.example.timed.Repository.FrequenciaRepository;
-import com.example.timed.Repository.MedicamentoRepository;
+import com.example.timed.Repository.MedicacaoRepository;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class CrudMedicacaoActivity extends AppCompatActivity {
     String FREQUENCIA_DEFAULT = "Frequências";
 
     FrequenciaRepository frequenciaRepository;
-    MedicamentoRepository medicamentoRepository;
+    MedicacaoRepository medicacaoRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class CrudMedicacaoActivity extends AppCompatActivity {
         });
 
         frequenciaRepository = new FrequenciaRepository(this);
-        medicamentoRepository = new MedicamentoRepository(this);
+        medicacaoRepository = new MedicacaoRepository(this);
 
         EditText inputNome = findViewById(R.id.input_nome_medicamento);
         EditText inputDosagem = findViewById(R.id.input_dosagem_medicamento);
@@ -84,7 +84,7 @@ public class CrudMedicacaoActivity extends AppCompatActivity {
             }
 
             int idFrequenciaSelecionada = frequenciaRepository.getFrequenciaByDescricao(frequenciaSelecionada).Id;
-            medicamentoRepository.insertMedicamento(nome, Integer.parseInt(dosagem), idFrequenciaSelecionada);
+            medicacaoRepository.insertMedicacao(nome, Integer.parseInt(dosagem), idFrequenciaSelecionada);
 
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);

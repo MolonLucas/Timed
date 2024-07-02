@@ -19,12 +19,12 @@ import com.example.timed.Lists.ListFrequenciaActivity;
 import com.example.timed.Lists.ListMedicacaoActivity;
 import com.example.timed.R;
 import com.example.timed.Repository.FrequenciaRepository;
-import com.example.timed.Repository.MedicamentoRepository;
+import com.example.timed.Repository.MedicacaoRepository;
 
 public class HomeActivity extends AppCompatActivity {
 
     FrequenciaRepository frequenciaRepository;
-    MedicamentoRepository medicamentoRepository;
+    MedicacaoRepository medicacaoRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, callback);
 
         frequenciaRepository = new FrequenciaRepository(this);
-        medicamentoRepository = new MedicamentoRepository(this);
+        medicacaoRepository = new MedicacaoRepository(this);
 
         Button btnCadastrarMedicamento = findViewById(R.id.btn_novo_medicamento);
         Button btnCadastrarFrequencia = findViewById(R.id.btn_nova_frequencia);
@@ -75,11 +75,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private boolean PossuiFrequenciaCadastrada(){
-        return (long) frequenciaRepository.getAllFrequencias().size() > 0;
+        return frequenciaRepository.getAllFrequencias().size() > 0;
     }
 
     private boolean PossuiMedicamentoCadastrado(){
-        return medicamentoRepository.getAllMedicamentos().getCount() > 0;
+        return medicacaoRepository.getAllMedicacoes().size() > 0;
     }
 
     private void MostrarAlertaNenhumaFrequenciaCadastradaParaMedicamento(){

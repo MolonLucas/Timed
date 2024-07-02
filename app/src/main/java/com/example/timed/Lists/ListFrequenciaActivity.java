@@ -16,11 +16,14 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.timed.Cruds.CrudFrequenciaActivity;
 import com.example.timed.Model.Frequencia;
 import com.example.timed.R;
+import com.example.timed.Repository.FrequenciaRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListFrequenciaActivity extends AppCompatActivity {
+
+    FrequenciaRepository frequenciaRepository;
 
     LinearLayout listFrequencias;
 
@@ -35,25 +38,11 @@ public class ListFrequenciaActivity extends AppCompatActivity {
             return insets;
         });
 
+        frequenciaRepository = new FrequenciaRepository(this);
+
         listFrequencias = findViewById(R.id.layout_list_frequencia);
 
-        List<Frequencia> frequenciaList = this.getFrequenciasMock();
-
-        adicionarItensLista(frequenciaList);
-    }
-
-    private List<Frequencia> getFrequenciasMock() {
-        List<Frequencia> retorno = new ArrayList<>();
-
-        Frequencia f1 = new Frequencia(1, "De 4 em 4");
-        Frequencia f2 = new Frequencia(2, "De 8 em 8");
-        Frequencia f3 = new Frequencia(3, "De 12 em 12");
-
-        retorno.add(f1);
-        retorno.add(f2);
-        retorno.add(f3);
-
-        return retorno;
+        adicionarItensLista(frequenciaRepository.getAllFrequencias());
     }
 
     private void adicionarItensLista(List<Frequencia> frequenciaList) {
