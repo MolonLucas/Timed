@@ -39,9 +39,7 @@ public class HomeActivity extends AppCompatActivity {
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
-            public void handleOnBackPressed() {
-                // Método em branco para bloquear o click do botão voltar
-            }
+            public void handleOnBackPressed() { }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
 
@@ -54,23 +52,23 @@ public class HomeActivity extends AppCompatActivity {
         Button btnEditarFrequencia = findViewById(R.id.btn_edit_frequencia);
 
         btnCadastrarMedicamento.setOnClickListener(v -> {
-            //if (PossuiFrequenciaCadastrada())
+            if (PossuiFrequenciaCadastrada())
                 RedirecionarParaActivity(CrudMedicacaoActivity.class);
-            //else
-            //    MostrarAlertaNenhumaFrequenciaCadastradaParaMedicamento();
+            else
+                MostrarAlertaNenhumaFrequenciaCadastradaParaMedicamento();
         });
         btnCadastrarFrequencia.setOnClickListener(v -> RedirecionarParaActivity(CrudFrequenciaActivity.class));
         btnEditarMedicamento.setOnClickListener(v -> {
-            //if (PossuiMedicamentoCadastrado())
-                RedirecionarParaActivity(ListMedicacaoActivity.class);
-            //else
-            //    MostrarAlertaNenhumMedicamentoCadastrado();
+            if (PossuiMedicamentoCadastrado())
+              RedirecionarParaActivity(ListMedicacaoActivity.class);
+            else
+                MostrarAlertaNenhumMedicamentoCadastrado();
         });
         btnEditarFrequencia.setOnClickListener(v -> {
-            //if (PossuiFrequenciaCadastrada())
-                RedirecionarParaActivity(ListFrequenciaActivity.class);
-            //else
-            //    MostrarAlertaNenhumaFrequenciaCadastrada();
+            if (PossuiFrequenciaCadastrada())
+              RedirecionarParaActivity(ListFrequenciaActivity.class);
+            else
+                MostrarAlertaNenhumaFrequenciaCadastrada();
         });
     }
 

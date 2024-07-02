@@ -30,7 +30,7 @@ public class CrudMedicacaoActivity extends AppCompatActivity {
     FrequenciaRepository frequenciaRepository;
     MedicacaoRepository medicacaoRepository;
 
-    int medicacaoId = -1; // Identificador da medicação a ser atualizada, inicializado como -1 se não estiver atualizando
+    int medicacaoId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

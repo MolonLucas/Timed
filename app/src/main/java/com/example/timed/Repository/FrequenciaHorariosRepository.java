@@ -99,7 +99,7 @@ public class FrequenciaHorariosRepository {
                 cursor.close();
             }
         }
-        return null; // Retorna null se não encontrar o horário com o ID especificado
+        return null;
     }
 
     public int updateFrequenciaHorario(int id, int frequenciaId, String datahora) {

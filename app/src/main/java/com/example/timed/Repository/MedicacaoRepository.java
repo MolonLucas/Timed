@@ -47,7 +47,6 @@ public class MedicacaoRepository {
                         int dosagem = cursor.getInt(dosagemIndex);
                         int idFrequencia = cursor.getInt(idFrequenciaIndex);
 
-                        // Fetch the corresponding Frequencia
                         FrequenciaRepository frequenciaRepository = new FrequenciaRepository(context);
                         Frequencia frequencia = frequenciaRepository.getFrequenciaById(idFrequencia);
 
@@ -80,7 +79,6 @@ public class MedicacaoRepository {
                     int dosagem = cursor.getInt(dosagemIndex);
                     int idFrequencia = cursor.getInt(idFrequenciaIndex);
 
-                    // Fetch the corresponding Frequencia
                     FrequenciaRepository frequenciaRepository = new FrequenciaRepository(context);
                     Frequencia frequencia = frequenciaRepository.getFrequenciaById(idFrequencia);
 
@@ -95,7 +93,7 @@ public class MedicacaoRepository {
                 cursor.close();
             }
         }
-        return null; // Retorna null se não encontrar a medicação com o ID especificado
+        return null;
     }
 
     public Medicacao getMedicacaoByNome(String nome) {
@@ -112,7 +110,6 @@ public class MedicacaoRepository {
                     int dosagem = cursor.getInt(dosagemIndex);
                     int idFrequencia = cursor.getInt(idFrequenciaIndex);
 
-                    // Fetch the corresponding Frequencia
                     FrequenciaRepository frequenciaRepository = new FrequenciaRepository(context);
                     Frequencia frequencia = frequenciaRepository.getFrequenciaById(idFrequencia);
 
@@ -127,7 +124,7 @@ public class MedicacaoRepository {
                 cursor.close();
             }
         }
-        return null; // Retorna null se não encontrar a medicação com o nome especificado
+        return null;
     }
 
     public int updateMedicacao(int id, String nome, double dosagem, int idFrequencia) {

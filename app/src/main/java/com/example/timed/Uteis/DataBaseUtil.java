@@ -35,9 +35,9 @@ public class DataBaseUtil extends SQLiteOpenHelper {
                 "datahora TEXT)";
         db.execSQL(createTableFrequenciaHorarios);
 
-        insertDefaultFrequencias(db);
-        insertDefaultMedicamentos(db);
-        insertDefaultFrequenciaHorarios(db);
+        //insertDefaultFrequencias(db);
+        //insertDefaultMedicamentos(db);
+        //insertDefaultFrequenciaHorarios(db);
     }
 
     @Override
@@ -64,21 +64,6 @@ public class DataBaseUtil extends SQLiteOpenHelper {
         insertMedicamento(db, "Benegripe", 1, 1);
         insertMedicamento(db, "Loratadina", 2, 2);
         insertMedicamento(db, "Dipirona", 3, 3);
-        insertMedicamento(db, "Dipirona1", 4, 3);
-        insertMedicamento(db, "Dipirona2", 5, 3);
-        insertMedicamento(db, "Dipirona3", 6, 3);
-        insertMedicamento(db, "Dipirona4", 7, 3);
-        insertMedicamento(db, "Dipirona5", 8, 3);
-        insertMedicamento(db, "Dipirona6", 9, 3);
-        insertMedicamento(db, "Dipirona7", 10, 3);
-        insertMedicamento(db, "Dipirona8", 11, 3);
-        insertMedicamento(db, "Dipirona9", 12, 3);
-        insertMedicamento(db, "Dipirona10", 13, 3);
-        insertMedicamento(db, "Dipirona11", 14, 3);
-        insertMedicamento(db, "Dipirona12", 15, 3);
-        insertMedicamento(db, "Dipirona13", 16, 3);
-        insertMedicamento(db, "Dipirona14", 17, 3);
-        insertMedicamento(db, "Dipirona15", 18, 3);
     }
 
     private void insertMedicamento(SQLiteDatabase db, String nome, int dosagem, int idFrequencia) {
