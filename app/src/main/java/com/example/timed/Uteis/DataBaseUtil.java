@@ -57,7 +57,7 @@ public class DataBaseUtil extends SQLiteOpenHelper {
     private void insertFrequencia(SQLiteDatabase db, String descricao) {
         ContentValues values = new ContentValues();
         values.put("descricao", descricao);
-        db.insert("medicamento", null, values);
+        db.insert("frequencia", null, values);
     }
 
     private void insertDefaultMedicamentos(SQLiteDatabase db) {
@@ -71,7 +71,7 @@ public class DataBaseUtil extends SQLiteOpenHelper {
         values.put("nome", nome);
         values.put("dosagem", dosagem);
         values.put("idFrequencia", idFrequencia);
-        db.insert("frequencia", null, values);
+        db.insert("medicamento", null, values);
     }
 
     private void insertDefaultFrequenciaHorarios(SQLiteDatabase db) {

@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +26,10 @@ import java.util.List;
 
 public class CrudMedicacaoActivity extends AppCompatActivity {
 
+    String FREQUENCIA_DEFAULT = "Frequências";
+
     FrequenciaRepository frequenciaRepository;
+    MedicamentoRepository medicamentoRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class CrudMedicacaoActivity extends AppCompatActivity {
         });
 
         frequenciaRepository = new FrequenciaRepository(this);
+        medicamentoRepository = new MedicamentoRepository(this);
 
         EditText inputNome = findViewById(R.id.input_nome_medicamento);
         EditText inputDosagem = findViewById(R.id.input_dosagem_medicamento);
@@ -48,6 +53,39 @@ public class CrudMedicacaoActivity extends AppCompatActivity {
         CarregarFrequencias(cmbFrequencia);
 
         btnFinalizar.setOnClickListener(v -> {
+            String nome = inputNome.getText().toString().trim();
+            String dosagem = inputDosagem.getText().toString().trim();
+            String frequenciaSelecionada = cmbFrequencia.getSelectedItem().toString();
+
+            if (nome.isEmpty()) {
+                inputNome.setError("O nome do medicamento é obrigatório");
+                inputNome.requestFocus();
+                return;
+            }
+
+            if (dosagem.isEmpty()) {
+                inputDosagem.setError("A dosagem do medicamento é obrigatória");
+                inputDosagem.requestFocus();
+                return;
+            }
+
+            try {
+                Integer.parseInt(dosagem);
+            } catch (NumberFormatException e) {
+                inputDosagem.setError("A dosagem deve ser um valor inteiro");
+                inputDosagem.requestFocus();
+                return;
+            }
+
+            if (frequenciaSelecionada.equals(FREQUENCIA_DEFAULT)) {
+                Toast.makeText(this, "Selecione uma frequência válida", Toast.LENGTH_SHORT).show();
+                cmbFrequencia.requestFocus();
+                return;
+            }
+
+            int idFrequenciaSelecionada = frequenciaRepository.getFrequenciaByDescricao(frequenciaSelecionada).Id;
+            medicamentoRepository.insertMedicamento(nome, Integer.parseInt(dosagem), idFrequenciaSelecionada);
+
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         });
@@ -57,7 +95,7 @@ public class CrudMedicacaoActivity extends AppCompatActivity {
         List<Frequencia> frequencias = frequenciaRepository.getAllFrequencias();
 
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
-        adapter.add("Frequências");
+        adapter.add(FREQUENCIA_DEFAULT);
         for (Frequencia frequencia: frequencias) {
             adapter.add(frequencia.Descricao);
         }

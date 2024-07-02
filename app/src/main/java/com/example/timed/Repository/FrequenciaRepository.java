@@ -71,6 +71,26 @@ public class FrequenciaRepository {
         return null; // Retorna null se não encontrar a frequência com o ID especificado
     }
 
+    public Frequencia getFrequenciaByDescricao(String descricao) {
+        Cursor cursor = db.rawQuery("SELECT * FROM frequencia WHERE descricao = ?", new String[]{descricao});
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                int idIndex = cursor.getColumnIndex("id");
+                int descricaoIndex = cursor.getColumnIndex("descricao");
+
+                if (idIndex >= 0 && descricaoIndex >= 0) {
+                    int id = cursor.getInt(idIndex);
+                    return new Frequencia(id, descricao);
+                }
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return null; // Retorna null se não encontrar a frequência com a descrição especificada
+    }
+
     public int updateFrequencia(int id, String descricao) {
         ContentValues values = new ContentValues();
         values.put("descricao", descricao);

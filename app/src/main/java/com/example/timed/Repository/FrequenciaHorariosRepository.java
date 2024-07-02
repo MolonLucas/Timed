@@ -17,7 +17,7 @@ public class FrequenciaHorariosRepository {
 
     public long insertFrequenciaHorario(int frequenciaId, String datahora) {
         ContentValues values = new ContentValues();
-        values.put("frequenciaId", frequenciaId);
+        values.put("idFrequencia", frequenciaId);
         values.put("datahora", datahora);
         return db.insert("frequencia_horarios", null, values);
     }
@@ -36,7 +36,7 @@ public class FrequenciaHorariosRepository {
 
     public int updateFrequenciaHorario(int id, int frequenciaId, String datahora) {
         ContentValues values = new ContentValues();
-        values.put("frequenciaId", frequenciaId);
+        values.put("idFrequencia", frequenciaId);
         values.put("datahora", datahora);
         return db.update("frequencia_horarios", values, "id = ?", new String[]{String.valueOf(id)});
     }
