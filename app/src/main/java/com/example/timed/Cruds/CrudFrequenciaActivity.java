@@ -91,14 +91,14 @@ public class CrudFrequenciaActivity extends AppCompatActivity {
                 for (String horario : horarios) {
                     frequenciaHorariosRepository.insertFrequenciaHorario((int) idFrequencia, horario);
                 }
-                mensagem = "Frequência atualizada com sucesso!";
+                mensagem = "Frequência salva com sucesso!";
             } else {
                 frequenciaRepository.updateFrequencia(frequenciaId, descricao);
                 frequenciaHorariosRepository.deleteFrequenciaHorariosByFrequenciaId(frequenciaId);
                 for (String horario : horarios) {
                     frequenciaHorariosRepository.insertFrequenciaHorario(frequenciaId, horario);
                 }
-                mensagem = "Frequência salva com sucesso!";
+                mensagem = "Frequência atualizada com sucesso!";
             }
 
             Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
